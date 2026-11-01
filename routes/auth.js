@@ -37,6 +37,12 @@ router.post('/register', async (req, res) => {
     if (!fullName || !username || !email || !password) {
       return res.status(400).json({ message: 'All fields are required' })
     }
+    if (password.length < 6) {
+  return res.status(400).json({ message: 'Password must be at least 6 characters' })
+}
+if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  return res.status(400).json({ message: 'Please enter a valid email address' })
+}
 
     const existingEmail = await User.findOne({ email: email.toLowerCase() })
     if (existingEmail) {
